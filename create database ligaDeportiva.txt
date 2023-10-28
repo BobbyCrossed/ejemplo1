@@ -1,0 +1,56 @@
+create database ligaDeportiva;
+use ligaDeportiva;
+
+create table jugadores(
+	idJugador int unsigned primary key, 
+	Nombre varchar(30) not null, 
+	género enum("Masc", "Fem", "Otros"),
+	FechaNac date, 
+	Nacionalidad varchar(20) default "España", 
+	Posición set("portero", "defensa", "centrocampista", "delantero"),
+	Salario float
+)
+
+create table equipos(
+	idEquipo int unsigned primary key,
+	nombre varchar(30) not null,
+	categoria enum("primera", "segunda"),
+	Añoconst year(4),
+	escudo varchar(100),
+	PuntosTemp int unsigned default 0
+);
+
+
+create table estadios(
+	idestadio int unsigned,
+	nombre varchar(30),
+	localización varchar(30),
+	capacidad int unsigned default 0,
+	ciudad varchar(30),
+	codEquipo int unsigned not null,
+	primary key(idestadio),
+	foreign key(codEquipo) references equipos(idequipo)
+);
+
+create table empleado(
+	idempleado int unsigned,
+	codequipo int unsigned,
+	nombre varchar(30),
+	cargo enum("director", "secretario", "otros"),
+	nomina float,
+	telefono varchar(9),
+	tipoContrato enum("indefinido", "temporal", "Obra y servicio"),
+	primary key(idempleado),
+	foreign key(codequipo) references equipos(idequipo)
+);
+
+create table fichar(
+	Idficha int unsigned,
+	codJugador int unsigned not null,
+	codEquipo int unsigned not null,
+	FechaInic date not null,
+	FechaFin date,
+	primary key (idFicha),
+	foreign key(codjugador) references jugadores(idjugador),
+	foreign key(codequipo) references equipos(idequipo)
+);
